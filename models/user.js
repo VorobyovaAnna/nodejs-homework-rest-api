@@ -17,6 +17,10 @@ const userSchema = new Schema({
         enum: ["starter", "pro", "business"],
         default: "starter"
     },
+    avatarURL: {
+        type: String,
+        required: true,
+    },
     token: {
         type: String,
         default: null,
@@ -27,9 +31,10 @@ userSchema.post("save", handleSchemaValidationErrors);
 
 const registerSchema = Joi.object({
     password: Joi.string().min(6).required(),
-    repeat_password: Joi.ref("password"),
+    repeatPassword: Joi.string().required().valid(Joi.ref("password")),
     email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
     subscription: Joi.string(),
+    avatarURL: Joi.string(),
     token: Joi.string(),
 });
 
